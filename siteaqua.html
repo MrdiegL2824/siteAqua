@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Tudo sobre Aquarismo Amazônico</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eef7f2;
+            color: #333;
+        }
+        header {
+            background-color: #165a3e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #228b5f;
+            text-align: center;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+        nav a:hover {
+            color: yellow;
+        }
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 20px;
+        }
+        section {
+            margin-bottom: 30px;
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        h2 {
+            color: #165a3e;
+            border-bottom: 2px solid #165a3e;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #228b5f;
+            margin-top: 20px;
+        }
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #165a3e;
+            color: white;
+        }
+        .peixes-container, .plantas-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+        .peixe-card, .planta-card {
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            padding: 10px;
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .peixe-card:hover, .planta-card:hover {
+            transform: scale(1.05);
+        }
+        .peixe-card img, .planta-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        footer {
+            background-color: #165a3e;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: #fff;
+            margin: 80px auto;
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            text-align: center;
+        }
+        .modal-content img {
+            max-width: 80%;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .close {
+            position: absolute;
+            right: 15px; top: 10px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Tudo sobre Aquarismo Amazônico</h1>
+    <p>Peixes, plantas e cuidados para um aquário perfeito</p>
+</header>
+<nav>
+    <a href="#oque">O que é</a>
+    <a href="#guia">Guia Completo</a>
+    <a href="#peixes">Peixes</a>
+    <a href="#plantas">Plantas</a>
+    <a href="#equipamentos">Equipamentos</a>
+</nav>
+<main>
+    <section id="oque">
+        <h2>O que é um Aquário Amazônico?</h2>
+        <p>Um aquário amazônico busca reproduzir as condições naturais dos rios da Amazônia, com peixes, plantas e decorações semelhantes ao habitat original. A água geralmente é levemente ácida, com temperatura entre 24°C e 28°C.</p>
+        <img src="https://i1.wp.com/myaquarium.com.br/wp-content/uploads/2020/08/36684833_10156202951115255_324603028252393472_n_2048x.jpg?fit=2048%2C1152&ssl=1" style="width:100%; border-radius:10px;">
+    </section>
+
+
+  <section id="guia">
+  <h2>Guia Completo para Montar um Aquário Plantado Amazônico</h2>
+  <p>Este guia reúne todas as etapas e informações essenciais para montar e manter um aquário plantado de estilo amazônico, saudável e bonito.</p>
+
+
+  <h3>1. Estrutura do Aquário</h3>
+  <ul>
+    <li><strong>Aquário:</strong> mínimo de 60 litros para facilitar o equilíbrio da água.</li>
+    <li><strong>Vidro:</strong> 6 mm de espessura (para evitar empenamento).</li>
+    <li><strong>Tampa:</strong> reduz evaporação e impede a fuga de peixes saltadores.</li>
+    <li><strong>Iluminação:</strong> LED de espectro completo (6.500K a 8.000K).</li>
+  </ul>
+
+
+  <h3>2. Substrato</h3>
+  <ul>
+    <li><strong>Camada nutritiva:</strong> substrato fértil para plantas (ex: ADA Amazonia, Tropica).</li>
+    <li><strong>Camada inerte:</strong> areia de filtro de piscina, areia de rio lavada ou cascalho fino.</li>
+    <li>Evitar pedriscos grandes que dificultam o enraizamento.</li>
+  </ul>
+
+
+  <h3>3. Filtragem</h3>
+  <ul>
+    <li><strong>Filtro externo (canister) ou hang-on:</strong> mantém a água cristalina e oxigenada.</li>
+    <li>Coloque mídias biológicas (cerâmica, siporax) para colônias de bactérias.</li>
+    <li>Fluxo suave para imitar rios amazônicos.</li>
+  </ul>
+
+
+  <h3>4. Aquecimento</h3>
+  <ul>
+    <li><strong>Aquecedor com termostato:</strong> 1W por litro de água (orientação geral).</li>
+    <li>Temperatura ideal: <strong>26–28°C</strong>.</li>
+  </ul>
+
+
+  <h3>5. Plantas Indicadas</h3>
+  <p>Prefira espécies amazônicas ou adaptadas ao clima tropical:</p>
+  <ul>
+    <li>Cabomba furcata</li>
+    <li>Hygrophila polysperma</li>
+    <li>Echinodorus amazonicus</li>
+    <li>Anubias barteri var. nana</li>
+    <li>Ludwigia repens</li>
+  </ul>
+
+
+  <h3>6. Fauna Recomendada</h3>
+  <ul>
+    <li>Peixes de cardume: Neon Tetra, Rodóstomo, Tetra Limão.</li>
+    <li>Ciclídeos anões: Apistogramma, Ramirezi.</li>
+    <li>Peixes de fundo: Corydoras, Otocinclus, cascudos pequenos.</li>
+    <li>Invertebrados compatíveis: Caridinas, Ampulárias.</li>
+  </ul>
+
+
+  <h3>7. Manutenção</h3>
+  <ul>
+    <li>Trocar 20–30% da água semanalmente.</li>
+    <li>Limpar o vidro com imã ou esponja.</li>
+    <li>Poda regular das plantas para evitar excesso de sombra.</li>
+    <li>Verificar parâmetros de pH (6,0–7,0), KH, GH e nitratos.</li>
+  </ul>
+
+
+  <h3>8. Dicas Extras</h3>
+  <ul>
+    <li>Evite superpopulação de peixes.</li>
+    <li>Introduza fauna gradualmente, após o ciclo do nitrogênio.</li>
+    <li>Use fertilizantes líquidos e CO₂ se necessário para plantas exigentes.</li>
+  </ul>
+
+
+  <h3>9. Montagem — Passo a Passo</h3>
+  <ol>
+    <li><strong>Limpeza inicial:</strong> lave o aquário apenas com água. Lave troncos e pedras; ferva troncos por 30–60 min para reduzir taninos e eliminar parasitas.</li>
+    <li><strong>Substrato:</strong> coloque 2–3 cm de substrato fértil e cubra com 3–5 cm de camada inerte (areia/cascalho).</li>
+    <li><strong>Decoração:</strong> posicione troncos e pedras antes de encher. Prenda plantas de rizoma (Anubias, bucephalandra) com linha ou cola atóxica.</li>
+    <li><strong>Plantio:</strong> use pinça para plantar caules e rosetas; não enterre rizomas.</li>
+    <li><strong>Encher:</strong> coloque um prato/folha plástica sobre o substrato e despeje água lentamente para evitar turvar.</li>
+    <li><strong>Equipar:</strong> instale filtro, aquecedor e termômetro; ajuste temperatura para 26–28°C; inicie iluminação com ~6 h/dia na 1ª semana.</li>
+  </ol>
+
+
+  <h3>10. Preparação da Água</h3>
+  <ul>
+    <li>Use condicionador de água para neutralizar cloro e cloramina (conforme instruções do produto).</li>
+    <li>Adicione bactérias de ciclagem comerciais para acelerar a colonização (ex.: produtos tipo "Stability").</li>
+    <li>Mantenha o filtro ligado 24h e monitore temperatura e fluxo.</li>
+  </ul>
+
+
+  <h3>11. Ciclagem</h3>
+  <p>Duração aproximada: <strong>30–40 dias</strong>.</p>
+  <ul>
+    <li>Objetivo: estabelecer bactérias que transformam amônia → nitrito → nitrato.</li>
+    <li>Teste amônia e nitrito semanalmente; só adicionar peixes quando ambos estiverem em <strong>0 mg/L</strong>.</li>
+    <li>Se houver picos de amônia/nitrito, faça trocas parciais de 20–30% até estabilizar.</li>
+  </ul>
+
+
+  <h3>12. Aclimatação dos Peixes</h3>
+  <ol>
+    <li>Coloque o saco fechado flutuando no aquário por <strong>15–20 minutos</strong> para igualar a temperatura.</li>
+    <li>Abra o saco e, a cada 5 minutos, adicione pequenas quantidades de água do aquário ao saco por ~30 minutos.</li>
+    <li>Use rede para transferir os peixes para o aquário — não despeje a água da loja.</li>
+    <li>Alimente-os com moderação nos primeiros dias.</li>
+  </ol>
+
+
+  <h3>13. Checklist rápido de compras</h3>
+  <ul>
+    <li>Aquário (mín. 60 L) + tampa</li>
+    <li>Iluminação LED (6.500K–8.000K)</li>
+    <li>Filtro (canister ou hang-on) + mídias biológicas</li>
+    <li>Aquecedor com termostato + termômetro</li>
+    <li>Substrato fértil + areia/cascalho</li>
+    <li>Troncos/pedras (esterilizados)</li>
+    <li>Condicionador de água, bactérias de ciclagem</li>
+    <li>Testes: amônia, nitrito, nitrato, pH, KH/GH</li>
+    <li>Rede, sifão, balde exclusivo, pinça para plantas</li>
+  </ul>
+
+
+  <h3>14. Rotina mensal / manutenção longa</h3>
+  <ul>
+    <li>Troca semanal de 20–30% da água.</li>
+    <li>Testes mensais completos (pH, amônia, nitrito, nitrato, KH, GH).</li>
+    <li>Podas e replantio conforme necessidade.</li>
+    <li>Verificar e limpar mídias do filtro se necessário (nunca limpe com água clorada).</li>
+  </ul>
+  <aside>
+    <strong>Nota:</strong> as faixas e instruções acima são orientações gerais; ajuste conforme as espécies que escolher e condições locais. Para plantas mais exigentes, considere fertilização completa (substrato + fertilizante líquido) e injeção de CO₂.
+  </aside>
+</section>
+    </section>
+    <section id="peixes">
+        <h2>Peixes Comuns</h2>
+        <div class="peixes-container">
+
+
+            <div class="peixe-card" onclick="openModal('tetra-neon')">
+                <img src="https://1.bp.blogspot.com/-NltHmyqKhtM/V951rTcu13I/AAAAAAAAD5I/8ZZbb9LZPV4jGUbsQV6jIvLLn8dN2DxYQCLcB/s1600/Ikan-hias-Cardinal-Tetra-01.jpg" ><p><strong>Tetra Neon</strong></p></div>
+            <div class="peixe-card" onclick="openModal('tetra-limao')">
+                <img src="https://th.bing.com/th/id/R.c4dc97a165955717ecc8ed43af4c2e62?rik=8Dn8Xq3BlDEGBw&pid=ImgRaw&r=0" ><p><strong>Tetra Limão</strong></p></div>
+            <div class="peixe-card" onclick="openModal('tetra-fantasma-negro')">
+                <img src="https://livingaqua-shop.com/cdn/shop/products/black-phantom-tetra-6.webp?v=1676572540&width=1946" ><p><strong>Tetra Fantasma Negro</strong></p></div>
+            <div class="peixe-card" onclick="openModal('tetra-negro')">
+                <img src="https://th.bing.com/th/id/R.09be361f07f1755e5a1aacf147d38280?rik=eqhcf6kpQVNoVg&pid=ImgRaw&r=0" ><p><strong>Tetra Negro</strong></p></div>
+            <div class="peixe-card" onclick="openModal('tetra-rosado')">
+                <img src="https://c1.staticflickr.com/7/6163/6164771258_8ae344bb6a_b.jpg" ><p><strong>Tetra Rosado</strong></p></div>
+            <div class="peixe-card" onclick="openModal('rodostomo')">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_820120-MLB74605496408_022024-O.webp" ><p><strong>Rodóstomo</strong></p></div>
+            <div class="peixe-card" onclick="openModal('tetra-borboleta')">
+                <img src="https://i0.wp.com/myaquarium.com.br/wp-content/uploads/2023/01/Marbled-Hatchetfish-Carnegiella-Strigata-appearance.jpg?w=670&ssl=1" ><p><strong>Tetra Borboleta</strong></p></div>
+            <div class="peixe-card" onclick="openModal('ramirezi')">
+                <img src="https://images.tcdn.com.br/img/img_prod/648834/ramirezi_german_blue_mikrogeophagus_ramirezi_4435_1_e5c1807467575f897e9481fe079b6454.jpg" ><p><strong>Ramirezi</strong></p></div>
+            <div class="peixe-card" onclick="openModal('apistogramma-agassizii')">
+                <img src="https://www.fishipedia.fr/wp-content/uploads/2017/11/Apistogramma-agassizii.jpg" ><p><strong>Apistogramma agassizii</strong></p></div>
+            <div class="peixe-card" onclick="openModal('apistogramma-cacatuoides')">
+                <img src="https://tse3.mm.bing.net/th/id/OIP.E2QYlzSFIXdlmWDJBQTxXQHaE9?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" ><p><strong>Apistogramma cacatuoides</strong></p></div>
+            <div class="peixe-card" onclick="openModal('bolivian-ram')">
+                <img src="https://tse4.mm.bing.net/th/id/OIP.2-tbVQEEo-hLskBXRsPoMwHaF0?rs=1&pid=ImgDetMain&o=7&rm=3" ><p><strong>Bolivian Ram</strong></p></div>
+            <div class="peixe-card" onclick="openModal('acara-disco')">
+                <img src="https://pescariasa.com.br/wp-content/uploads/2023/04/acara-disco-tudo-sobre-symphysodon-aequifasciatus-700x467.jpg" ><p><strong>Acará-Disco</strong></p></div>
+            <div class="peixe-card" onclick="openModal('acara-bandeira')">
+                <img src="https://pescariasa.com.br/wp-content/uploads/2023/04/acara-bandeira-reproducao.jpg" ><p><strong>Acará-Bandeira</strong></p></div>
+            <div class="peixe-card" onclick="openModal('ancistrus')">
+                <img src="https://tse2.mm.bing.net/th/id/OIP.Dbf1UzlrG5w_ONu0zfjdUAHaEk?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3" ><p><strong>Ancistrus</strong></p></div>
+            <div class="peixe-card" onclick="openModal('corydoras')">
+                <img src="https://th.bing.com/th/id/R.132f68769c9aea7b484bf422c7a6bdd7?rik=pBFQHMI773GP6g&riu=http%3a%2f%2fwww.aquaportail.com%2faquabdd%2fphotos%2fcorydoras-duplicareus.jpg&ehk=i%2fJrold6i7Pbe09r9O1%2fG%2fp123152h97qphL17Lh32k%3d&risl=&pid=ImgRaw&r=0"><p><strong>Corydoras</strong></p></div>
+        </div>
+    </section>
+        </div>
+    </section>
+    <section id="plantas">
+        <h2>Plantas Amazônicas Comuns</h2>
+        <div class="plantas-container">
+
+
+            <div class="planta-card" onclick="openModal('cabomba')">
+                <img src="https://th.bing.com/th/id/R.fb658c6c428a13bd40e53e697a79bed4?rik=sa9IocyV68dbcA&riu=http%3a%2f%2faquariumbg.com%2fimages%2fplants%2fCabomba_furcata.jpg&ehk=duM0eWRnVIaUFb3Fg1Lp1PBc3ICiBdDIur2%2fDTrJyyU%3d&risl=&pid=ImgRaw&r=0"><p><strong>Cabomba furcata</strong></p></div>
+            <div class="planta-card" onclick="openModal('hygrophila')">
+                <img src="https://tse1.mm.bing.net/th/id/OIP.vPedgcUzzNqc9dhyTQP34wHaFj?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3"><p><strong>Hygrophila polysperma</strong></p></div>
+            <div class="planta-card" onclick="openModal('anubias')">
+                <img src="https://th.bing.com/th/id/R.c6ab5aa9617e44a3423589a6cb2633de?rik=yREidxrgpr%2bw%2fQ&riu=http%3a%2f%2f3.bp.blogspot.com%2f-aEvDEpHUrbs%2fT6otmBywzEI%2fAAAAAAAAAtU%2fEyR4LERaaDg%2fs1600%2fanubias%252520barteri%252520var_%252520nana%252520petite.jpg&ehk=YpRT3ZZdSRN%2bbgwB6hHXpA8A8V7%2fSldztvDecCNusRo%3d&risl=&pid=ImgRaw&r=0"><p><strong>Anubias barteri var. nana</strong></p></div>
+            <div class="planta-card" onclick="openModal('ludwigia')">
+                <img src="https://www.aquasabi.de/bilder/kk_dropper_uploads/wp_Ludwigia_arcuata_135.0069.00_detailaufnahme_beschreibungsfoto_gross.jpg"><p><strong>Ludwigia repens</strong></p></div>
+            <div class="planta-card" onclick="openModal('vallisneria')">
+                <img src="https://www.aquariumplantsfactory.com/cdn/shop/products/Vallisneria-spiralis-Straight-Val-grande.jpg?v=1644987967"><p><strong>Vallisneria americana (Tapeçaria Amazônica)</strong></p></div>
+            <div class="planta-card" onclick="openModal('cryptocoryne')">
+                <img src="https://www.aquariumplantsfactory.com/cdn/shop/products/cryptocoryne-wendtii-brown-crypt-live-aquatic-plant-grande.jpg?v=1644989113"><p><strong>Cryptocoryne wendtii</strong></p></div>
+            <div class="planta-card" onclick="openModal('musgojava')">
+                <img src="https://www.aquariumgardens.co.uk/ekmps/shops/aquariumgardens/images/java-moss-1224-p.jpg"><p><strong>Musgo de Java (Taxiphyllum barbieri)</strong></p></div>
+            <div class="planta-card" onclick="openModal('pistia')">
+                <img src="https://www.plantedtank.net/attachments/pistia-stratiotes-water-lettuce-jpg.896457/"><p><strong>Pistia stratiotes (Alface-d’água)</strong></p></div>
+            <div class="planta-card" onclick="openModal('echinodorus')">
+                <img src="https://plantsnshrimps.com/wp-content/uploads/2013/02/Echinodorus-amazonicus.jpg"><p><strong>Echinodorus amazonicus (Espada Amazônica)</strong></p></div>
+
+
+
+
+        </div>
+    </section>
+    <section id="equipamentos">
+        <h2>Equipamentos Essenciais</h2>
+        <ul>
+            <li><strong>Filtro</strong> — Pode ser canister ou interno, para filtração biológica, mecânica e química.</li>
+            <li><strong>Iluminação</strong> — Lâmpadas LED específicas para plantas, entre 6500K e 9000K.</li>
+            <li><strong>Termostato e aquecedor</strong> — Para manter temperatura entre 24°C e 28°C.</li>
+            <li><strong>Testes de água</strong> — Para medir pH, amônia, nitrito, nitrato e dureza.</li>
+            <li><strong>Condicionador de água</strong> — Remove cloro e metais pesados.</li>
+            <li><strong>Fertilizantes</strong> — Líquidos ou substratos nutritivos para plantas.</li>
+            <li><strong>CO2</strong> (opcional) — Ajuda no crescimento saudável das plantas.</li>
+        </ul>
+    </section>
+</main>
+
+
+<div id="modal-tetra-neon" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('tetra-neon')">x</span>
+    <h2>Tetra Neon</h2>
+    <img src="https://1.bp.blogspot.com/-NltHmyqKhtM/V951rTcu13I/AAAAAAAAD5I/8ZZbb9LZPV4jGUbsQV6jIvLLn8dN2DxYQCLcB/s1600/Ikan-hias-Cardinal-Tetra-01.jpg">
+    <p><strong>Cuidados:</strong> Peixe pacífico, vive melhor em cardumes com no mínimo 6 indivíduos.</p>
+    <p><strong>pH:</strong> 5.5 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes pequenos e tranquilos.</p>
+    <p><strong>Temperatura ideal:</strong> 23°C - 27°C</p>
+  </div>
+</div>
+
+
+<div id="modal-tetra-limao" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('tetra-limao')">x</span>
+    <h2>Tetra Limão</h2>
+    <img src="https://th.bing.com/th/id/R.c4dc97a165955717ecc8ed43af4c2e62?rik=8Dn8Xq3BlDEGBw&pid=ImgRaw&r=0" alt="Tetra Limão">
+    <p><strong>Cuidados:</strong> Peixe ativo e sociável, ideal para cardumes grandes.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Peixes pacíficos e de porte similar.</p>
+    <p><strong>Temperatura ideal:</strong> 22°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-tetra-fantasma-negro" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('tetra-fantasma-negro')">x</span>
+    <h2>Tetra Fantasma Negro</h2>
+    <img src="https://livingaqua-shop.com/cdn/shop/products/black-phantom-tetra-6.webp?v=1676572540&width=1946">
+    <p><strong>Cuidados:</strong> Peixe pacífico, prefere águas limpas e plantadas.</p>
+    <p><strong>pH:</strong> 6.0 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Boas para aquários comunitários tranquilos.</p>
+    <p><strong>Temperatura ideal:</strong> 23°C - 27°C</p>
+  </div>
+</div>
+
+
+<div id="modal-tetra-negro" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('tetra-negro')">x</span>
+    <h2>Tetra Negro</h2>
+    <img src="https://th.bing.com/th/id/R.09be361f07f1755e5a1aacf147d38280?rik=eqhcf6kpQVNoVg&pid=ImgRaw&r=0">
+    <p><strong>Cuidados:</strong> Requer água limpa e vegetação abundante.</p>
+    <p><strong>pH:</strong> 5.5 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes pequenos e pacíficos.</p>
+    <p><strong>Temperatura ideal:</strong> 24°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-tetra-rosado" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('tetra-rosado')">x</span>
+    <h2>Tetra Rosado</h2>
+    <img src="https://c1.staticflickr.com/7/6163/6164771258_8ae344bb6a_b.jpg">
+    <p><strong>Cuidados:</strong> Fácil de cuidar, bom para iniciantes.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Comunidade pacífica.</p>
+    <p><strong>Temperatura ideal:</strong> 23°C - 27°C</p>
+  </div>
+</div>
+
+
+<div id="modal-rodostomo" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('rodostomo')">x</span>
+    <h2>Rodóstomo</h2>
+    <img src="https://http2.mlstatic.com/D_NQ_NP_820120-MLB74605496408_022024-O.webp">
+    <p><strong>Cuidados:</strong> Prefere águas limpas e corrente moderada.</p>
+    <p><strong>pH:</strong> 6.5 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Peixes pacíficos e de tamanho médio.</p>
+    <p><strong>Temperatura ideal:</strong> 24°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-tetra-borboleta" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('tetra-borboleta')">x</span>
+    <h2>Tetra Borboleta</h2>
+    <img src="https://i0.wp.com/myaquarium.com.br/wp-content/uploads/2023/01/Marbled-Hatchetfish-Carnegiella-Strigata-appearance.jpg?w=670&ssl=1">    
+    <p><strong>Cuidados:</strong> Gosta de superfície calma e plantas flutuantes.</p>
+    <p><strong>pH:</strong> 6.0 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes tranquilos e cardumes.</p>
+    <p><strong>Temperatura ideal:</strong> 23°C - 27°C</p>
+  </div>
+</div>
+
+
+<div id="modal-ramirezi" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('ramirezi')">x</span>
+    <h2>Ramirezi</h2>
+    <img src="https://images.tcdn.com.br/img/img_prod/648834/ramirezi_german_blue_mikrogeophagus_ramirezi_4435_1_e5c1807467575f897e9481fe079b6454.jpg">
+    <p><strong>Cuidados:</strong> Requer água limpa e quente, ideal para aquários plantados.</p>
+    <p><strong>pH:</strong> 5.0 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes pacíficos e calmos.</p>
+    <p><strong>Temperatura ideal:</strong> 25°C - 29°C</p>
+  </div>
+</div>
+
+
+<div id="modal-apistogramma-agassizii" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('apistogramma-agassizii')">x</span>
+    <h2>Apistogramma agassizii</h2>
+    <img src="https://www.fishipedia.fr/wp-content/uploads/2017/11/Apistogramma-agassizii.jpg">
+    <p><strong>Cuidados:</strong> Prefere ambientes plantados com esconderijos.</p>
+    <p><strong>pH:</strong> 6.0 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes tranquilos e territoriais.</p>
+    <p><strong>Temperatura ideal:</strong> 24°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-apistogramma-cacatuoides" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('apistogramma-cacatuoides')">x</span>
+    <h2>Apistogramma cacatuoides</h2>
+    <img src="https://tse3.mm.bing.net/th/id/OIP.E2QYlzSFIXdlmWDJBQTxXQHaE9?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3">
+    <p><strong>Cuidados:</strong> Necessita de esconderijos e água limpa.</p>
+    <p><strong>pH:</strong> 6.0 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes territoriais e calmos.</p>
+    <p><strong>Temperatura ideal:</strong> 24°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-bolivian-ram" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('bolivian-ram')">x</span>
+    <h2>Bolivian Ram</h2>
+    <img src="https://tse4.mm.bing.net/th/id/OIP.2-tbVQEEo-hLskBXRsPoMwHaF0?rs=1&pid=ImgDetMain&o=7&rm=3">
+    <p><strong>Cuidados:</strong> Peixe pacífico, gosta de áreas com plantas e esconderijos.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Peixes tranquilos de tamanho médio.</p>
+    <p><strong>Temperatura ideal:</strong> 24°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-acara-disco" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('acara-disco')">x</span>
+    <h2>Acará-Disco</h2>
+    <img src="https://pescariasa.com.br/wp-content/uploads/2023/04/acara-disco-tudo-sobre-symphysodon-aequifasciatus-700x467.jpg">
+    <p><strong>Cuidados:</strong> Peixe sensível, requer água muito limpa e aquário plantado.</p>
+    <p><strong>pH:</strong> 5.0 - 6.5</p>
+    <p><strong>Compatibilidade:</strong> Espécies calmas, mas pode ser territorial.</p>
+    <p><strong>Temperatura ideal:</strong> 26°C - 30°C</p>
+  </div>
+</div>
+
+
+<div id="modal-acara-bandeira" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('acara-bandeira')">x</span>
+    <h2>Acará-Bandeira</h2>
+    <img src="https://pescariasa.com.br/wp-content/uploads/2023/04/acara-bandeira-reproducao.jpg">
+    <p><strong>Cuidados:</strong> Gosta de áreas com plantas e espaço para nadar.</p>
+    <p><strong>pH:</strong> 6.0 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Peixes pacíficos e de tamanho médio.</p>
+    <p><strong>Temperatura ideal:</strong> 24°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-ancistrus" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('ancistrus')">x</span>
+    <h2>Ancistrus</h2>
+    <img src="https://tse2.mm.bing.net/th/id/OIP.Dbf1UzlrG5w_ONu0zfjdUAHaEk?cb=thfc1&rs=1&pid=ImgDetMain&o=7&rm=3">
+    <p><strong>Cuidados:</strong> Peixe limpa fundo, precisa de esconderijos e boa filtragem.</p>
+    <p><strong>pH:</strong> 6.5 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Espécies pacíficas e comunitárias.</p>
+    <p><strong>Temperatura ideal:</strong> 23°C - 28°C</p>
+  </div>
+</div>
+
+
+<div id="modal-corydoras" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('corydoras')">x</span>
+    <h2>Corydoras</h2>
+    <img src="https://th.bing.com/th/id/R.132f68769c9aea7b484bf422c7a6bdd7?rik=pBFQHMI773GP6g&riu=http%3a%2f%2fwww.aquaportail.com%2faquabdd%2fphotos%2fcorydoras-duplicareus.jpg&ehk=i%2fJrold6i7Pbe09r9O1%2fG%2fp123152h97qphL17Lh32k%3d&risl=&pid=ImgRaw&r=0">
+    <p><strong>Cuidados:</strong> Peixe de fundo, gosta de substrato macio e águas limpas.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Peixes pacíficos e de grupo.</p>
+    <p><strong>Temperatura ideal:</strong> 22°C - 28°C</p>
+  </div>
+</div>
+
+
+<!-- Modal Planta -->
+<div id="modal-cabomba" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('cabomba')">x</span>
+    <h2>Cabomba furcata</h2>
+    <img src="https://th.bing.com/th/id/R.fb658c6c428a13bd40e53e697a79bed4?rik=sa9IocyV68dbcA&riu=http%3a%2f%2faquariumbg.com%2fimages%2fplants%2fCabomba_furcata.jpg&ehk=duM0eWRnVIaUFb3Fg1Lp1PBc3ICiBdDIur2%2fDTrJyyU%3d&risl=&pid=ImgRaw&r=0" alt="Cabomba furcata">
+    <p><strong>Cuidados:</strong> Planta delicada e de crescimento rápido.</p>
+    <p><strong>pH:</strong> 5.5 - 7.0</p>
+    <p><strong>Compatibilidade:</strong> Ideal para aquários comunitários pacíficos.</p>
+    <p><strong>CO2:</strong> Recomendado para melhor desenvolvimento.</p>
+    <p><strong>Luz:</strong> Média a alta</p>
+  </div>
+</div>
+
+
+<div id="modal-hygrophila" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('hygrophila')">x</span>
+    <h2>Hygrophila polysperma</h2>
+    <img src="https://tse1.mm.bing.net/th/id/OIP.vPedgcUzzNqc9dhyTQP34wHaFj?cb=thfvnext&rs=1&pid=ImgDetMain&o=7&rm=3" alt="Hygrophila polysperma">
+    <p><strong>Cuidados:</strong> Planta de rápido crescimento, fácil de manter.</p>
+    <p><strong>pH:</strong> 6.0 - 8.0</p>
+    <p><strong>Compatibilidade:</strong> Muito usada em aquários iniciantes.</p>
+    <p><strong>CO2:</strong> Opcional.</p>
+    <p><strong>Luz:</strong> Baixa a média</p>
+  </div>
+</div>
+
+
+<div id="modal-anubias" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('anubias')">x</span>
+    <h2>Anubias barteri var. nana</h2>
+    <img src="https://th.bing.com/th/id/R.c6ab5aa9617e44a3423589a6cb2633de?rik=yREidxrgpr%2bw%2fQ&riu=http%3a%2f%2f3.bp.blogspot.com%2f-aEvDEpHUrbs%2fT6otmBywzEI%2fAAAAAAAAAtU%2fEyR4LERaaDg%2fs1600%2fanubias%252520barteri%252520var_%252520nana%252520petite.jpg&ehk=YpRT3ZZdSRN%2bbgwB6hHXpA8A8V7%2fSldztvDecCNusRo%3d&risl=&pid=ImgRaw&r=0" alt="Anubias barteri var. nana">
+    <p><strong>Cuidados:</strong> Planta muito resistente, cresce em troncos e pedras.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Ideal para iniciantes e aquários comunitários.</p>
+    <p><strong>CO2:</strong> Não é necessário.</p>
+    <p><strong>Luz:</strong> Baixa</p>
+  </div>
+</div>
+
+
+<div id="modal-ludwigia" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('ludwigia')">x</span>
+    <h2>Ludwigia repens</h2>
+    <img src="https://www.aquasabi.de/bilder/kk_dropper_uploads/wp_Ludwigia_arcuata_135.0069.00_detailaufnahme_beschreibungsfoto_gross.jpg" alt="Ludwigia repens">
+    <p><strong>Cuidados:</strong> Planta vermelha, traz contraste ao aquário.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Ótima para aquários comunitários.</p>
+    <p><strong>CO2:</strong> Recomendado para cores mais intensas.</p>
+    <p><strong>Luz:</strong> Média a alta</p>
+  </div>
+</div>
+
+
+<div id="modal-echinodorus" class="modal">
+  <div class="modal-content">
+        <span class="close" onclick="closeModal('echinodorus')">x</span>
+        <h2>Echinodorus amazonicus (Espada Amazônica)</h2>
+        <img src="https://plantsnshrimps.com/wp-content/uploads/2013/02/Echinodorus-amazonicus.jpg">
+        <p><strong>Cuidados:</strong> Planta robusta, ideal para fundo do aquário.</p>
+        <p><strong>pH:</strong> 6.0 - 7.5</p>
+        <p><strong>Compatibilidade:</strong> Peixes pacíficos.</p>
+        <p><strong>CO2:</strong> Opcional para melhor crescimento.</p>
+        <p><strong>Luz:</strong> Média a alta</p>
+    </div>
+</div>
+
+
+<div id="modal-vallisneria" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('vallisneria')">x</span>
+    <h2>Vallisneria americana (Tapeçaria Amazônica)</h2>
+    <img src="https://www.aquariumplantsfactory.com/cdn/shop/products/Vallisneria-spiralis-Straight-Val-grande.jpg?v=1644987967" alt="Vallisneria americana">
+    <p><strong>Cuidados:</strong> Planta de fundo com folhas longas e finas, cria efeito de grama aquática.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Muito usada em aquários comunitários, peixes adoram nadar entre suas folhas.</p>
+    <p><strong>CO2:</strong> Opcional.</p>
+    <p><strong>Luz:</strong> Baixa a média</p>
+  </div>
+</div>
+
+
+<div id="modal-cryptocoryne" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('cryptocoryne')">x</span>
+    <h2>Cryptocoryne wendtii</h2>
+    <img src="https://www.aquariumplantsfactory.com/cdn/shop/products/cryptocoryne-wendtii-brown-crypt-live-aquatic-plant-grande.jpg?v=1644989113" alt="Cryptocoryne wendtii">
+    <p><strong>Cuidados:</strong> Planta de folhas largas e resistentes, ótima para o meio do aquário.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Ideal para aquários plantados amazônicos.</p>
+    <p><strong>CO2:</strong> Não é necessário.</p>
+    <p><strong>Luz:</strong> Baixa a média</p>
+  </div>
+</div>
+
+
+<div id="modal-musgojava" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('musgojava')">x</span>
+    <h2>Musgo de Java (Taxiphyllum barbieri)</h2>
+    <img src="https://www.aquariumgardens.co.uk/ekmps/shops/aquariumgardens/images/java-moss-1224-p.jpg" alt="Musgo de Java">
+    <p><strong>Cuidados:</strong> Muito resistente, cresce preso em troncos, pedras ou como tapete.</p>
+    <p><strong>pH:</strong> 5.5 - 8.0</p>
+    <p><strong>Compatibilidade:</strong> Usado como abrigo para alevinos e camarões.</p>
+    <p><strong>CO2:</strong> Não é necessário.</p>
+    <p><strong>Luz:</strong> Baixa a média</p>
+  </div>
+</div>
+
+
+<div id="modal-pistia" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal('pistia')">x</span>
+    <h2>Pistia stratiotes (Alface-d’água)</h2>
+    <img src="https://www.plantedtank.net/attachments/pistia-stratiotes-water-lettuce-jpg.896457/" alt="Pistia stratiotes">
+    <p><strong>Cuidados:</strong> Planta flutuante que ajuda a controlar nitratos e a entrada de luz.</p>
+    <p><strong>pH:</strong> 6.0 - 7.5</p>
+    <p><strong>Compatibilidade:</strong> Fornece sombra e abrigo para peixes.</p>
+    <p><strong>CO2:</strong> Não é necessário.</p>
+    <p><strong>Luz:</strong> Média a alta</p>
+  </div>
+</div>
+
+
+
+
+
+
+<script>
+    function openModal(id) {
+        document.getElementById('modal-' + id).style.display = 'block';
+    }
+    function closeModal(id) {
+        document.getElementById('modal-' + id).style.display = 'none';
+    }
+    // Fecha o modal ao clicar fora do conteúdo
+    window.onclick = function(event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if(event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    }
+</script>
+</body>
+</html>
