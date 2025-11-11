@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mini Plants vs Zombies — Top-down (Demo)</title>
+<style>
+  :root{--bg:#9edc6a;--cell:#8fcd5a;--grid:#76b54a}
+  html,body{height:100%;margin:0;font-family:Inter,Segoe UI,Roboto,Arial;color:#072;}
+  .wrap{display:flex;gap:12px;padding:12px}
+  .panel{width:260px;background:#fff;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(0,0,0,.12)}
+  .board{flex:1;display:flex;align-items:center;justify-content:center}
+  canvas{background:linear-gradient(180deg,var(--bg),#86c15a);border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+  .toolbar{display:flex;flex-direction:column;gap:8px}
+  .card{display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;border:2px solid #eee;cursor:pointer}
+  .card.locked{opacity:.5;filter:grayscale(30%)}
+  .card.selected{border-color:#6b9b3a;box-shadow:inset 0 0 0 3px rgba(107,155,58,.08)}
+  .icon{width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700}
+  .sun{background:gold;border-radius:10px}
+  .pea{background:#6fd3d6}
+  .nut{background:#d8b07a}
+  .info{font-size:14px}
+  .status{margin-top:12px;padding:8px;border-radius:8px;background:#f4fff1}
+  button{padding:8px 10px;border-radius:8px;border:0;background:#6b9b3a;color:#fff;cursor:pointer}
+  .small{font-size:13px;color:#556}
+  footer{margin-top:12px;font-size:13px;color:#445}
+  @media(max-width:900px){.wrap{flex-direction:column}.panel{width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <h3>Plantas</h3>
+    <div class="toolbar" id="toolbar"></div>
+    <div class="status">
+      <div>Dinheiro: <strong id="money">50</strong></div>
+      <div class="small">Clique em uma planta e depois no gramado para plantar (uma por quadrado).</div>
+      <div style="margin-top:8px"><button id="startBtn">Iniciar / Pausar</button> <button id="resetBtn">Reiniciar</button></div>
+    </div>
+    <footer>
+      <div class="small">Girasol gera dinheiro automaticamente. Ervilha atira automaticamente. No é barreira.</div>
+      <div class="small">Zumbis surgem à direita e andam para a esquerda. Cada tiro reduz vida.</div>
+    </footer>
+  </div>
+  <div class="board">
+    <canvas id="game" width="960" height="640"></canvas>
+  </div>
+</div>
+<script>
+// === Configs ===
+const ROWS = 5;
+const COLS = 9;
+const CELL = 96; // pixels
+const CANVAS_W = COLS * CELL;
+const CANVAS_H = ROWS * CELL;
+const FPS = 60;
+const START_MONEY = 50;
+
+// Plant definitions
+const PLANTS = {
+  sunflower: {name:'Girasol', cost:50, type:'sun', size:0.9, color:'#FFD050', cooldown:3, produce:25, produceTime:7, hp:100},
+  peashooter: {name:'Ervilha', cost:100, type:'shooter', size:0.9, color:'#5FD3A6', cooldown:2, dmg:1, fireRate:1,hp:100},
+  walnut: {name:'No', cost:75, type:'barrier', size:1.0, color:'#CB996B', cooldown:6, hp:120}
+};
+
+// Zombie template
+const ZOMBIE = {speed:30, hp:6, color:'#9b6b6b', size:0.9};
+
+// Game state
+let canvas = document.getElementById('game');
+let ctx = canvas.getContext('2d');
+canvas.width = CANVAS_W; canvas.height = CANVAS_H;
+let money = START_MONEY;
+let grid = Array.from({length:ROWS},()=>Array(COLS).fill(null));
+let plants = [];
+let bullets = [];
+let zombies = [];
+let selectedPlantKey = null;
+let running = false;
+let lastSpawn = 0;
+let spawnInterval = 20500; // ms
+let lastTime = performance.now();
+
+// Cooldowns
+let plantCooldowns = {};
+
+// UI init
+const toolbarEl = document.getElementById('toolbar');
+const moneyEl = document.getElementById('money');
+function initToolbar(){
+  for(const key of Object.keys(PLANTS)){
+    const p = PLANTS[key];
+    const div = document.createElement('div');
+    div.className='card';
+    div.id='card-'+key;
+    div.innerHTML = `<div class="icon" style="background:${p.color}">${p.name[0]}</div><div class="info"><strong>${p.name}</strong><div class="small">R$ ${p.cost}</div></div>`;
+    div.onclick = ()=>{ if(money>=p.cost && !plantCooldowns[key]){ setSelected(key);} else {setSelected(key);} };
+    toolbarEl.appendChild(div);
+  }
+}
+function setSelected(key){
+  selectedPlantKey = key;
+  Array.from(toolbarEl.children).forEach(c=>c.classList.remove('selected'));
+  const el = document.getElementById('card-'+key);
+  if(el) el.classList.add('selected');
+}
+
+initToolbar();
+
+// Input
+canvas.addEventListener('click',e=>{
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  const col = Math.floor(x / CELL);
+  const row = Math.floor(y / CELL);
+  if(selectedPlantKey){
+    placePlant(selectedPlantKey,row,col);
+  }
+});
+
+function placePlant(key,row,col){
+  if(row<0||col<0||row>=ROWS||col>=COLS) return;
+  if(grid[row][col]) return; // already occupied
+  const spec = PLANTS[key];
+  if(money < spec.cost) return;
+  if(plantCooldowns[key]) return;
+  money -= spec.cost; updateMoney();
+  grid[row][col] = {key, row, col, hp: spec.hp || 9999, spec, born:performance.now()};
+  plants.push(grid[row][col]);
+  // set cooldown
+  plantCooldowns[key] = true;
+  setTimeout(()=>{ delete plantCooldowns[key]; updateToolbarLocks(); }, spec.cooldown*1000);
+  updateToolbarLocks();
+}
+
+function updateToolbarLocks(){
+  for(const key of Object.keys(PLANTS)){
+    const el = document.getElementById('card-'+key);
+    if(!el) continue;
+    const locked = (money < PLANTS[key].cost) || plantCooldowns[key];
+    el.classList.toggle('locked', locked);
+  }
+}
+
+function updateMoney(){ moneyEl.textContent = money; updateToolbarLocks(); }
+
+// Game loop
+function spawnZombie(){
+  const row = Math.floor(Math.random()*ROWS);
+  const z = {x: CANVAS_W + 40, y: row*CELL + CELL/2, row, hp: ZOMBIE.hp, speed: ZOMBIE.speed, color: ZOMBIE.color, w: CELL*ZOMBIE.size, h: CELL*ZOMBIE.size, alive:true, id: Math.random()}
+  zombies.push(z);
+}
+
+function update(dt){
+  // spawn
+  lastSpawn += dt;
+  if(lastSpawn > spawnInterval){ lastSpawn = 0; spawnZombie(); }
+
+  // plants behavior
+  const now = performance.now();
+  for(const p of plants){
+    const spec = p.spec;
+    if(spec.type === 'sun'){
+      if(!p._lastProduce) p._lastProduce = now;
+      if(now - p._lastProduce > spec.produceTime*1000){ money += spec.produce; p._lastProduce = now; updateMoney(); }
+    }
+    if(spec.type === 'shooter'){
+      if(!p._lastFire) p._lastFire = now;
+      if(now - p._lastFire > spec.fireRate*1000){
+        // find target in same row to the right
+        const target = zombies.find(z=>z.row === p.row && z.x > p.col*CELL);
+        if(target){ bullets.push({x: p.col*CELL + CELL*0.6, y: p.row*CELL + CELL/2, vx: 320, vy:0, dmg: spec.dmg}); p._lastFire = now; }
+      }
+    }
+  }
+
+  // bullets
+  for(let i=bullets.length-1;i>=0;i--){
+    const b = bullets[i]; b.x += b.vx * (dt/1000);
+    // collision with zombies
+    for(const z of zombies){
+      if(Math.abs(b.y - z.y) < CELL*0.5 && b.x > z.x - z.w/2 && b.x < z.x + z.w/2){ z.hp -= b.dmg; bullets.splice(i,1); break; }
+    }
+    if(b && b.x > CANVAS_W + 20) bullets.splice(i,1);
+  }
+
+  // zombies movement & attack
+  for(let i=zombies.length-1;i>=0;i--){
+    const z = zombies[i];
+    if(!z.alive) continue;
+    // check for plant in same cell in front
+    const col = Math.floor((z.x - 10) / CELL);
+    if(col >= 0 && col < COLS){
+      const plant = grid[z.row][col];
+      if(plant){
+        // attack barrier plant slowly
+        z.vx = 0;
+        if(!z._lastBite) z._lastBite = performance.now();
+        if(performance.now() - z._lastBite > 600){ plant.hp -= 1; z._lastBite = performance.now(); if(plant.hp <= 0){ grid[plant.row][plant.col]=null; plants = plants.filter(p=>p!==plant); } }
+      } else {
+        z.x -= z.speed * (dt/1000);
+      }
+    } else {
+      z.x -= z.speed * (dt/1000);
+    }
+    // dead?
+    if(z.hp <= 0){ z.alive = false; zombies.splice(i,1); }
+    // reached left? game over if reach 0
+    if(z.x < 0){ running = false; alert('Game Over — um zumbi passou!'); resetGame(); return; }
+  }
+}
+
+function draw(){
+  // background grid (chess-like on grass)
+  ctx.clearRect(0,0,CANVAS_W,CANVAS_H);
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const x = c*CELL, y = r*CELL;
+      ctx.fillStyle = ( (r+c)%2 === 0) ? '#8fd064' : '#85c457';
+      roundRect(ctx,x+4,y+4,CELL-8,CELL-8,10,true,false);
+    }
+  }
+
+  // plants
+  for(const p of plants){
+    const x = p.col*CELL + CELL/2; const y = p.row*CELL + CELL/2; const size = CELL * p.spec.size * 0.8;
+    ctx.fillStyle = p.spec.color;
+    ctx.strokeStyle = '#2f2f2f22';
+    ctx.fillRect(x - size/2, y - size/2, size, size);
+    // hp bar for barriers
+    if(p.spec.type==='barrier'){
+      ctx.fillStyle = '#00000022'; ctx.fillRect(p.col*CELL+8, p.row*CELL+8, CELL-16,8);
+      const hpPct = Math.max(0,p.hp / p.spec.hp);
+      ctx.fillStyle = '#8b5a2b'; ctx.fillRect(p.col*CELL+8, p.row*CELL+8, (CELL-16)*hpPct,8);
+    }
+  }
+
+  // bullets
+  for(const b of bullets){
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(b.x-6,b.y-6,12,12);
+  }
+
+  // zombies
+  for(const z of zombies){
+    ctx.fillStyle = z.color; ctx.fillRect(z.x - z.w/2, z.y - z.h/2, z.w, z.h);
+    // hp
+    ctx.fillStyle = 'rgba(0,0,0,0.2)'; ctx.fillRect(z.x - z.w/2, z.y - z.h/2 - 8, z.w,6);
+    const pct = Math.max(0,z.hp / ZOMBIE.hp); ctx.fillStyle = '#ff6b6b'; ctx.fillRect(z.x - z.w/2, z.y - z.h/2 - 8, z.w * pct,6);
+  }
+
+  // HUD: selected plant highlight on grid
+  if(selectedPlantKey){
+    // draw icon following mouse? simple: draw on top-left the selected card
+  }
+}
+
+function roundRect(ctx,x,y,w,h,r,fill,stroke){ if(typeof r==='undefined') r=5; ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); if(fill) ctx.fill(); if(stroke) ctx.stroke(); }
+
+function loop(now){
+  const dt = now - lastTime; lastTime = now;
+  if(running) update(dt);
+  draw();
+  requestAnimationFrame(loop);
+}
+
+// Controls
+document.getElementById('startBtn').onclick = ()=>{ running = !running; document.getElementById('startBtn').textContent = running ? 'Pausar' : 'Iniciar'; };
+document.getElementById('resetBtn').onclick = resetGame;
+function resetGame(){ money = START_MONEY; updateMoney(); grid = Array.from({length:ROWS},()=>Array(COLS).fill(null)); plants = []; bullets = []; zombies = []; running=false; document.getElementById('startBtn').textContent='Iniciar'; }
+
+// initial spawn some zombies slowly
+setInterval(()=>{ if(running && Math.random()<0.1) spawnZombie(); }, 9000);
+
+// initial money update
+updateMoney();
+requestAnimationFrame(loop);
+
+// small enhancements: show costs and cooldowns in toolbar
+function refreshCooldownDisplay(){
+  for(const key of Object.keys(PLANTS)){
+    const el = document.getElementById('card-'+key);
+    if(!el) continue;
+    const spec = PLANTS[key];
+    const cd = plantCooldowns[key] ? ' (CD)' : '';
+    el.querySelector('.info').querySelector('div').textContent = `R$ ${spec.cost}${cd}`;
+  }
+}
+setInterval(refreshCooldownDisplay,300);
+
+// helper: place starter plants for demo
+function demoSetup(){
+  // place a sunflower in each of first two cols
+  for(let r=0;r<ROWS;r++){ if(!grid[r][1]) placePlant('sunflower',r,1); }
+}
+// demoSetup();
+
+// start paused
+running = false;
+
+</script>
+</body>
+</html>
