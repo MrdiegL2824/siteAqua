@@ -3,319 +3,601 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>Sistema Operacional Móvel — Mockup (Expandido)</title>
+  <title>Sistema Operacional Móvel — Simulação Avançada</title>
   <style>
+    /* 1. Variáveis CSS (Temas Base) */
     :root{
-      --bg:#061220; --accent:#0ea5ff; --glass: rgba(255,255,255,0.06);
-      --card:#0b1220; --muted:rgba(255,255,255,0.65);
+      --bg: #061220; --accent: #0ea5ff; --glass: rgba(255,255,255,0.06);
+      --card: #0b1220; --muted: rgba(255,255,255,0.65);
       --icon-bg: rgba(255,255,255,0.03);
+      --wallpaper: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=800&q=60');
       font-family: Inter, Roboto, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial;
     }
+    
+    /* Temas Personalizados */
+    .theme-green { --accent: #22c55e; --wallpaper: url('https://images.unsplash.com/photo-1555437021-a3f295b92706?auto=format&fit=crop&w=800&q=60'); }
+    .theme-pink { --accent: #ec4899; --wallpaper: url('https://images.unsplash.com/photo-1601700683058-24300e84b7a4?auto=format&fit=crop&w=800&q=60'); }
+    .theme-red { --accent: #ff4d4d; --wallpaper: url('https://images.unsplash.com/photo-1557682224-ce003ac55850?auto=format&fit=crop&w=800&q=60'); }
+    
+    /* 2. Estilos Gerais e Desktop Wrapper */
     *{box-sizing:border-box}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#051023 0%, #081226 100%);color:#fff}
-
-   
-    .phone-wrap{width:360px;height:780px;margin:28px auto;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03);position:relative;background-image:var(--wallpaper);background-size:cover}
-
-    .statusbar{height:36px;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);backdrop-filter:blur(6px)}
-    .status-left{display:flex;gap:8px;align-items:center}
-    .status-right{display:flex;gap:8px;align-items:center}
-    .battery{display:flex;gap:4px;align-items:center}
-    .battery .bar{width:28px;height:12px;border:1px solid rgba(255,255,255,0.25);border-radius:3px;position:relative}
-    .battery .level{position:absolute;left:1px;top:1px;bottom:1px;background:linear-gradient(90deg,var(--accent),#6ee7b7);border-radius:2px}
-
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#051023 0%, #081226 100%);color:#fff;display:flex;align-items:center;justify-content:center}
     
-    .panel{position:absolute;left:12px;right:12px;background:linear-gradient(180deg,rgba(2,6,23,0.95), rgba(8,12,28,0.98));z-index:60;padding:12px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.6)}
-    .notif-panel{top:36px;height:42%;overflow:auto;display:none}
-    .quick-panel{top:36px;right:12px;width:320px;display:none}
+    .desktop-wrap{display:flex;gap:40px;padding:20px;align-items:flex-start}
+
+    /* 3. Estrutura do Telefone */
+    .phone-wrap{width:360px;height:780px;border-radius:34px;overflow:hidden;box-shadow:0 30px 80px rgba(2,6,23,0.7);border:1px solid rgba(255,255,255,0.03);position:relative;background-image:var(--wallpaper);background-size:cover;transition:background-image 0.5s ease}
+
+    /* Barra de Status */
+    .statusbar{height:36px;padding:6px 12px;display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);backdrop-filter:blur(6px);position:relative;z-index:10}
+    .battery .level{transition:width 0.3s ease}
+
+    /* Painéis (Notificações/Quick Settings) */
+    .panel{position:absolute;left:12px;right:12px;background:linear-gradient(180deg,rgba(2,6,23,0.95), rgba(8,12,28,0.98));z-index:60;padding:12px;border-radius:12px;box-shadow:0 20px 40px rgba(0,0,0,0.6);backdrop-filter:blur(10px);opacity:0;pointer-events:none;transition:opacity 0.2s ease, transform 0.3s ease}
+    .panel.visible{opacity:1;pointer-events:auto;transform:translateY(0)!important}
+    
+    /* Posição dos Painéis */
+    .notif-panel{top:36px;height:42%;overflow-y:auto;transform:translateY(-10px);}
+    .quick-panel{top:36px;height:auto;transform:translateY(-10px);}
+    
+    /* Quick Tiles */
     .quick-row{display:flex;gap:8px;flex-wrap:wrap}
-    .quick-tile{flex:0 0 70px;height:70px;border-radius:12px;background:var(--icon-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:12px}
+    .quick-tile{flex:0 0 70px;height:70px;border-radius:12px;background:var(--icon-bg);display:flex;align-items:center;justify-content:center;flex-direction:column;font-size:12px;cursor:pointer;transition:background-color 0.2s ease, transform 0.1s ease}
+    .quick-tile.active{background:var(--accent)!important;color:#fff;box-shadow:0 0 10px rgba(var(--accent), 0.3)}
+    .quick-tile:active{transform:scale(0.95)}
 
+    /* Tela Inicial (Homescreen) */
+    .homescreen{padding:12px;padding-top:0;height:calc(100% - 36px);display:flex;flex-direction:column;position:relative;z-index:5}
+
+    /* Dock */
+    .dock{height:76px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:space-around;padding:8px;margin:10px;border:1px solid rgba(255,255,255,0.02);backdrop-filter:blur(10px)}
+    .dock .icon{width:56px;height:56px;padding:0;gap:0}
+    .dock .icon span{display:none}
+
+    /* Janela de Aplicativo */
+    .app-window{position:absolute;inset:36px 12px 12px 12px;background:linear-gradient(180deg,#072033, #071423);border-radius:16px;padding:12px;box-shadow:0 30px 60px rgba(2,6,23,0.6);display:none;flex-direction:column;z-index:70;backdrop-filter: blur(6px);transform-origin:bottom center;animation:openApp .25s cubic-bezier(0.25, 0.46, 0.45, 0.94) both}
+    @keyframes openApp{from{transform:scale(0.9) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
     
-    .homescreen{padding:12px;padding-top:0;height:calc(100% - 36px);display:flex;flex-direction:column}
-    .searchbar{height:44px;margin:10px 0;border-radius:12px;background:var(--glass);display:flex;gap:10px;align-items:center;padding:8px 12px}
-    .searchbar input{flex:1;background:transparent;border:0;color:#fff;font-size:14px;outline:none}
+    .app-content{flex:1;overflow-y:auto;padding:6px}
+    .close-btn{transition:color 0.2s ease}
+    .close-btn:hover{color:var(--accent)}
 
-    .widgets{display:flex;gap:12px;margin-bottom:8px}
-    .widget{flex:1;background:rgba(255,255,255,0.04);border-radius:12px;padding:10px}
-    .clock-widget{font-size:28px;font-weight:600}
-
-    .icons-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;flex:1;padding-bottom:12px}
-    .icon{background:var(--icon-bg);padding:10px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:8px;cursor:pointer;user-select:none;transition:transform .12s ease, box-shadow .12s ease;border:1px solid rgba(255,255,255,0.02)}
-    .icon img{width:48px;height:48px;border-radius:8px;object-fit:cover}
-    .icon span{font-size:12px;color:var(--muted);text-align:center}
-    .icon:active{transform:scale(.98)}
-    .icon.badge::after{content:attr(data-badge);position:absolute;margin-top:-6px;margin-left:18px;background:#ef4444;padding:2px 6px;border-radius:10px;font-size:11px}
-
-    .dock{height:76px;border-radius:18px;background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.02));display:flex;align-items:center;justify-content:space-around;padding:8px;margin:10px;border:1px solid rgba(255,255,255,0.02)}
-    .dock .icon{width:56px;height:56px}
-
-    .app-window{position:absolute;inset:36px 12px 12px 12px;background:linear-gradient(180deg,#072033, #071423);border-radius:16px;padding:12px;box-shadow:0 30px 60px rgba(2,6,23,0.6);display:none;flex-direction:column;z-index:70;backdrop-filter: blur(6px);transform-origin:center;animation:openApp .18s ease both}
-    @keyframes openApp{from{transform:scale(.98);opacity:0}to{transform:scale(1);opacity:1}}
-    .app-header{display:flex;align-items:center;justify-content:space-between;padding:6px 8px}
-    .app-content{flex:1;overflow:auto;padding:6px}
-    .close-btn{background:transparent;border:0;color:var(--muted);font-weight:700;font-size:18px}
-
-    .context-menu{position:absolute;background:var(--card);padding:8px;border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,0.6);display:none;z-index:100}
-    .context-menu button{display:block;background:transparent;border:0;color:var(--muted);padding:6px 10px;text-align:left;width:100%}
-
-    .lock-screen{position:absolute;inset:36px 12px 12px 12px;background:linear-gradient(180deg,#02121f 0%, #031428 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:80}
-    .lock-time{font-size:56px;font-weight:600}
-    .lock-date{margin-top:6px;color:var(--muted)}
-    .unlock-tip{position:absolute;bottom:30px;color:var(--muted);font-size:13px}
-
-    .app-drawer{position:absolute;left:12px;right:12px;bottom:12px;height:48%;background:linear-gradient(180deg,rgba(2,6,23,0.95), rgba(8,12,28,0.98));border-radius:16px;padding:12px;display:none;z-index:65}
+    /* Gaveta de Apps (App Drawer) */
+    .app-drawer{position:absolute;left:12px;right:12px;bottom:12px;height:48%;background:linear-gradient(180deg,rgba(2,6,23,0.95), rgba(8,12,28,0.98));border-radius:16px;padding:12px;z-index:65;backdrop-filter:blur(8px);overflow-y:auto;transition:transform 0.3s ease;transform:translateY(100%);opacity:0}
+    .app-drawer.visible{transform:translateY(0);opacity:1}
     .drawer-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
+    .app-drawer .icon{height:72px}
+    
+    /* Utilitários */
+    .setting-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05)}
+    .setting-row:last-child{border-bottom:none}
+    .setting-toggle{width:40px;height:24px;border-radius:12px;background:var(--muted);position:relative;cursor:pointer;transition:background-color 0.3s ease}
+    .setting-toggle.active{background:var(--accent)}
+    .setting-toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform 0.3s ease}
+    .setting-toggle.active::after{transform:translateX(16px)}
+    
+    /* Control Panel */
+    .control-panel{background:var(--card);padding:20px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.6);width:300px;border:1px solid rgba(255,255,255,0.05)}
+    .control-panel h3{color:var(--accent);margin-top:0}
+    .theme-selector{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+    .theme-btn{padding:8px 12px;border:1px solid var(--muted);border-radius:8px;cursor:pointer;background:transparent;color:var(--muted);transition:all 0.2s ease}
+    .theme-btn.active{border-color:var(--accent);color:var(--accent);font-weight:bold}
+    .shortcuts-list li{margin-bottom:8px}
 
-    .hidden{display:none}
-    .center{display:flex;align-items:center;justify-content:center}
-
-    @media(min-width:900px){body{background:#081125}
-      .phone-wrap{transform:scale(1.05)} }
   </style>
 </head>
 <body>
-  <div class="phone-wrap" id="phone" style="--wallpaper: url('https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=800&q=60')">
+  <div class="desktop-wrap">
 
-    <div class="statusbar">
-      <div class="status-left"><div id="carrier">Vivo</div><div>•</div><div id="signal">4G</div></div>
-      <div class="status-right"><div id="time">12:45</div>
-        <div class="battery"><div class="bar"><div class="level" id="batteryLevel" style="width:78%"></div></div><div style="font-size:11px;color:var(--muted)" id="batteryPct">78%</div></div>
-        <div class="notif-toggle" id="openNotifs">🔔</div>
-        <div class="quick-toggle" id="openQuick">⚙
-
-    <div class="panel notif-panel" id="notifPanel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <strong>Notificações</strong>
-        <button id="closeNotifs" class="close-btn">✕</button>
+    <div class="control-panel">
+      <h3>🎨 Personalização e Controle</h3>
+      <p style="font-size:12px;color:var(--muted)">Altere o tema do SO móvel:</p>
+      <div class="theme-selector" id="themeSelector">
+        <button class="theme-btn active" data-theme="default">🔵 Padrão (Azul)</button>
+        <button class="theme-btn" data-theme="green">🟢 Cosmic Green</button>
+        <button class="theme-btn" data-theme="pink">🟣 Neon Pink</button>
+        <button class="theme-btn" data-theme="red">🔴 Solar Red</button>
       </div>
-      <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px"><img src="https://dummyimage.com/48x48/222/fff&text=A" style="width:44px;height:44px;border-radius:8px"><div><strong>Professor</strong><div style="color:var(--muted)">Lembrete: entregar trabalho às 23:59</div></div></div>
-      <div class="notif">Atualização do sistema disponível</div>
-      <div class="notif">Alarme programado para amanhã 07:00</div>
+      <hr style="border-color:rgba(255,255,255,0.1)">
+      <h3>⌨️ Atalhos de Teclado (Botões Rápidos)</h3>
+      <ul class="shortcuts-list" style="list-style:none;padding:0;font-size:14px">
+        <li><strong>L</strong>: Travar / Destravar Tela</li>
+        <li><strong>N</strong>: Abrir Notificações (Swipe Down)</li>
+        <li><strong>Q</strong>: Abrir Configurações Rápidas</li>
+        <li><strong>D</strong>: Abrir / Fechar Gaveta de Apps (Swipe Up)</li>
+        <li><strong>Esc</strong>: Fechar App Ativo / Fechar Painéis</li>
+      </ul>
     </div>
 
-    <div class="panel quick-panel" id="quickPanel">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-        <strong>Configurações rápidas</strong>
-        <button id="closeQuick" class="close-btn">✕</button>
+    <div class="phone-wrap" id="phone">
+
+      <div class="statusbar">
+        <div class="status-left"><div id="carrier">Vivo</div><div>•</div><div id="signal">4G</div></div>
+        <div class="status-right"><div id="time">12:45</div>
+          <div class="battery"><div class="bar"><div class="level" id="batteryLevel" style="width:78%"></div></div><div style="font-size:11px;color:var(--muted)" id="batteryPct">78%</div></div>
+          <div class="notif-toggle" id="openNotifs" style="cursor:pointer">🔔</div>
+          <div class="quick-toggle" id="openQuick" style="cursor:pointer">⚙</div>
+        </div>
       </div>
-      <div class="quick-row">
-        <div class="quick-tile">Wi‑Fi<br><small style="color:var(--muted)">Ativo</small></div>
-        <div class="quick-tile">Bluetooth<br><small style="color:var(--muted)">Desativado</small></div>
-        <div class="quick-tile">Lanterna</div>
-        <div class="quick-tile">Modo Avião</div>
-        <div class="quick-tile">Economia</div>
+
+      <div class="panel notif-panel" id="notifPanel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <strong>Notificações Recentes</strong>
+          <button id="closeNotifs" class="close-btn">✕</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;padding:8px;border-radius:8px;background:var(--icon-bg)">
+          <img src="https://dummyimage.com/48x48/10b981/fff&text=M" style="width:44px;height:44px;border-radius:8px">
+          <div><strong>Mensagens</strong><div style="color:var(--muted);font-size:13px">Nova mensagem de Ana: "Tudo certo para amanhã?"</div></div>
+        </div>
+        <div style="padding:8px;border-radius:8px;background:var(--icon-bg);margin-bottom:6px">
+          <strong style="color:var(--accent)">Atualização do Sistema:</strong> Reinicialização necessária para finalizar.
+        </div>
       </div>
-      <div style="margin-top:10px">Brilho <input type="range" id="brightness" min="10" max="100" value="80" style="width:100%"></div>
+
+      <div class="panel quick-panel" id="quickPanel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <strong>Controles de Sistema</strong>
+          <button id="closeQuick" class="close-btn">✕</button>
+        </div>
+        <div class="quick-row">
+          <div class="quick-tile" data-toggle="wifi" id="quickWifi">Wi‑Fi<br><small>Desativado</small></div>
+          <div class="quick-tile" data-toggle="bluetooth" id="quickBluetooth">Bluetooth<br><small>Desativado</small></div>
+          <div class="quick-tile" data-toggle="flashlight" id="quickFlashlight">Lanterna</div>
+          <div class="quick-tile" data-toggle="airplane" id="quickAirplane">Modo Avião</div>
+          <div class="quick-tile" data-toggle="saver" id="quickSaver">Economia</div>
+          <div class="quick-tile" data-toggle="location" id="quickLocation">Localização</div>
+        </div>
+        <div style="margin-top:15px;color:var(--muted);font-size:12px;display:flex;align-items:center">
+          Brilho
+          <input type="range" id="brightness" min="10" max="100" value="80" style="width:100%;margin-top:0px;cursor:pointer;margin-left:10px">
+        </div>
+      </div>
+
+      <div class="lock-screen" id="lockScreen" style="position:absolute;inset:0;background:linear-gradient(180deg,#02121f 0%, #031428 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:80">
+        <div class="lock-time" id="lockTime" style="font-size:56px;font-weight:600">12:45</div>
+        <div class="lock-date" id="lockDate" style="margin-top:6px;color:var(--muted)">Terça-feira, 18 de Novembro</div>
+        <div class="unlock-tip" style="position:absolute;bottom:30px;color:var(--muted);font-size:13px">Toque duas vezes para desbloquear</div>
+      </div>
+
+      <div class="homescreen" id="homescreen">
+        <div class="searchbar">
+          <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>" alt="search">
+          <input placeholder="Procurar apps, configurações..." id="searchInput">
+        </div>
+
+        <div class="widgets">
+          <div class="widget center clock-widget" id="smallClock">12:45</div>
+          <div class="widget">
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <div style="display:flex;align-items:center">
+                <span class="weather-widget-icon" style="font-size:24px;margin-right:8px">🌧️</span> 
+                <div style="font-size:24px;font-weight:600">20°C</div>
+              </div>
+              <div style="color:var(--muted);font-size:12px;text-align:right">
+                Chuva<br>Itajaí, SC
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="icons-grid" id="iconsGrid">
+        </div>
+
+        <div class="dock">
+        </div>
+
+      </div>
+
+      <div class="app-drawer" id="appDrawer">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Todos os apps</strong><button id="closeDrawer" class="close-btn">✕</button></div>
+        <div class="drawer-grid" id="drawerGrid">
+        </div>
+      </div>
+
+      <div class="app-window" id="appWindow">
+        <div class="app-header">
+          <strong id="appTitle">App</strong>
+          <div><button class="close-btn" id="closeApp">✕</button></div>
+        </div>
+        <div class="app-content" id="appContent">
+        </div>
+      </div>
+
+      <div class="context-menu" id="ctxMenu">
+        <button id="ctxOpen">Abrir</button>
+        <button id="ctxInfo">Informações do App</button>
+        <button id="ctxRemove">Desinstalar</button>
+      </div>
+
     </div>
-
-    <div class="lock-screen" id="lockScreen">
-      <div class="lock-time" id="lockTime">12:45</div>
-      <div class="lock-date" id="lockDate">Quarta-feira, 11 de Novembro</div>
-      <div class="unlock-tip">Toque duas vezes para desbloquear</div>
-    </div>
-
-    <div class="homescreen" id="homescreen">
-      <div class="searchbar">
-        <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='7'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>" alt="search">
-        <input placeholder="Procurar apps, configurações..." id="searchInput">
-      </div>
-
-      <div class="widgets">
-        <div class="widget center clock-widget" id="smallClock">12:45</div>
-        <div class="widget">Clima<br><div style="color:var(--muted)">24°C — Parcial</div></div>
-      </div>
-
-      <div class="icons-grid" id="iconsGrid">
-      </div>
-
-      <div class="dock">
-        <div class="icon" data-app="phone" title="Telefone"><img src="https://dummyimage.com/96x96/0ea5ff/fff&text=TEL"><span>Telefone</span></div>
-        <div class="icon" data-app="messages" title="Mensagens"><img src="https://dummyimage.com/96x96/10b981/fff&text=MSG"><span>Mensagens</span></div>
-        <div class="icon" data-app="browser" title="Navegador"><img src="https://dummyimage.com/96x96/f59e0b/fff&text=WEB"><span>Navegador</span></div>
-        <div class="icon" data-app="camera" title="Câmera"><img src="https://dummyimage.com/96x96/ef4444/fff&text=CAM"><span>Câmera</span></div>
-      </div>
-
-    </div>
-
-    <div class="app-drawer" id="appDrawer">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><strong>Todos os apps</strong><button id="closeDrawer" class="close-btn">✕</button></div>
-      <div class="drawer-grid" id="drawerGrid"></div>
-    </div>
-
-    <div class="app-window" id="appWindow">
-      <div class="app-header">
-        <strong id="appTitle">App</strong>
-        <div><button class="close-btn" id="closeApp">✕</button></div>
-      </div>
-      <div class="app-content" id="appContent"></div>
-    </div>
-
-    <div class="context-menu" id="ctxMenu">
-      <button id="ctxOpen">Abrir</button>
-      <button id="ctxInfo">Informações</button>
-      <button id="ctxRemove">Remover</button>
-    </div>
-
   </div>
 
   <script>
     
+    // ===================================
+    // 1. ESTADO GLOBAL DO SIMULADOR
+    // ===================================
+
+    const appState = {
+        locked: true,
+        battery: { level: 78, isCharging: false },
+        quickSettings: {
+            wifi: false,
+            bluetooth: false,
+            flashlight: false,
+            airplane: false,
+            saver: false,
+            location: true
+        },
+        activeApp: null,
+        activePanel: null // 'notif', 'quick', 'drawer'
+    };
+
+    // 2. Definição dos Aplicativos (Database)
     const apps = [
-      {id:'phone', name:'Telefone', content:'<h3>Telefone</h3><p>Discagem rápida — mockup para trabalho.</p>'},
-      {id:'messages', name:'Mensagens', content:'<h3>Mensagens</h3><p>Lista de conversas (simulada).</p>'},
-      {id:'browser', name:'Navegador', content:'<h3>Navegador</h3><p>Digite um endereço real ou use este mock para demonstrar UI.</p>'},
-      {id:'camera', name:'Câmera', content:'<h3>Câmera</h3><p>Visualização simulada — permissões não requeridas em um mock.</p>'},
-      {id:'music', name:'Música', content:`<h3>Música</h3><p>Player simulado.</p><div><button id='playBtn'>▶️ Play</button> <button id='pauseBtn'>⏸️ Pause</button></div><div id='track' style='margin-top:8px;color:var(--muted)'>Nenhuma faixa</div>`},
-      {id:'files', name:'Arquivos', content:'<h3>Arquivos</h3><p>Gerenciador de arquivos (simulado) — mostrar pastas e documentos.</p>'},
-      {id:'store', name:'Loja', content:'<h3>Loja</h3><p>Procure apps (apenas demonstração).</p>'},
-      {id:'notes', name:'Notas', content:'<h3>Notas</h3><textarea style="width:100%;height:200px;border-radius:8px;background:rgba(255,255,255,0.02);color:#fff;border:1px solid rgba(255,255,255,0.03)"></textarea>'},
-      {id:'clock', name:'Relógio', content:'<h3>Relógio</h3><p>Alarmes e cronômetro (visual).</p>'},
-      {id:'settings', name:'Configurações', content:'<h3>Configurações</h3><p>Brilho, Wi‑Fi, Bluetooth (simulado).</p>'}
+      {id:'phone', name:'Telefone', color:'0ea5ff', dock: true, content: `<h3>📞 Chamadas Recentes</h3><p>Maria (Móvel) - 12:00<br>Suporte (Fixo) - 10:30</p><div style="margin-top:15px;padding:10px;background:var(--icon-bg);border-radius:8px"><strong>Teclado de Discagem Simulada</strong></div>`},
+      {id:'messages', name:'Mensagens', color:'10b981', dock: true, content: `<h3>💬 Conversas (3 Novas)</h3><p><strong>Ana:</strong> Tudo certo para amanhã? (Agora)<br><strong>Professor:</strong> Lembrete do Trabalho (Ontem)</p><div style="margin-top:15px;color:var(--muted)">Clique em um contato para simular a conversa.</div>`},
+      {id:'browser', name:'Navegador', color:'f59e0b', dock: true, content: `<h3>🌐 Navegador Web</h3><input type="text" value="https://simulacao.dev" style="width:100%;padding:10px;border-radius:8px;background:var(--icon-bg);border:none;color:#fff;margin-bottom:10px"><p>Barra de endereço simulada. Use este espaço para demonstrar conteúdo web.</p>`},
+      {id:'camera', name:'Câmera', color:'ef4444', dock: true, content: `<h3>📸 Câmera</h3><div style="height:350px;background:#000;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;border-radius:8px">Visor em Tempo Real (Simulado)</div><p style="text-align:center;margin-top:10px"><button style="padding:10px 20px;border-radius:20px;background:var(--accent);border:none;color:#fff;cursor:pointer">Tirar Foto</button></p>`},
+      {id:'music', name:'Música', color:'8b5cf6', dock: false, content:`<h3>🎶 Player de Música</h3><p><strong>Artista:</strong> Mockup Beats<br><strong>Faixa:</strong> Lo-Fi Session #1</p><div><button id='playBtn' class='quick-tile' style='width:auto;margin-right:8px;padding:8px 12px;height:auto;margin-top:10px'>▶️ Play</button> <button id='pauseBtn' class='quick-tile' style='width:auto;padding:8px 12px;height:auto'>⏸️ Pause</button></div><div id='track' style='margin-top:16px;color:var(--muted)'>Status: Pausado</div>`},
+      {id:'files', name:'Arquivos', color:'3b82f6', dock: false, content:'<h3>📁 Meus Arquivos</h3><ul style="list-style:none;padding:0"><li>Documentos (12)</li><li>Imagens (56)</li><li>Downloads (5)</li></ul>'},
+      {id:'store', name:'Loja', color:'06b6d4', dock: false, content:'<h3>🛍️ App Store</h3><p>Destaque: Jogo Simulador de UI.</p><p style="color:var(--accent)">Procure por novos apps!</p>'},
+      {id:'notes', name:'Notas', color:'f97316', dock: false, content:'<h3>📝 Notas Rápidas</h3><textarea placeholder="Sua nota aqui..." style="width:100%;height:200px;border-radius:8px;background:rgba(255,255,255,0.02);color:#fff;border:1px solid rgba(255,255,255,0.03);padding:10px"></textarea>'},
+      {id:'clock', name:'Relógio', color:'fbbf24', dock: false, content:'<h3>⏰ Relógio Mundial</h3><p>São Paulo: 12:45<br>Nova York: 10:45<br>Tóquio: 00:45</p>'},
+      {id:'settings', name:'Configurações', color:'6b7280', dock: false, content: `<h3>⚙️ Sistema</h3><div class="setting-row"><span>Wi-Fi</span><div class="setting-toggle" id="settingWifi"></div></div><div class="setting-row"><span>Bluetooth</span><div class="setting-toggle" id="settingBluetooth"></div></div><div class="setting-row"><span>Localização</span><div class="setting-toggle active" id="settingLocation"></div></div><div class="setting-row"><span>Atualização de Software</span><button style="background:var(--accent);color:#fff;padding:4px 8px;border:none;border-radius:6px;cursor:pointer">Verificar</button></div>`},
+      {id:'calendar', name:'Calendário', color:'ef4444', dock: false, content:'<h3>📅 Eventos</h3><p>18/Nov: Feriado Simulado<br>20/Nov: Apresentação de Projeto</p>'},
+      {id:'maps', name:'Mapas', color:'10b981', dock: false, content:'<h3>🗺️ Mapas</h3><div style="height:300px;background:#333;border-radius:8px;display:flex;align-items:center;justify-content:center">Visualização de Mapa Simulado</div>'},
     ];
 
-    const iconsGrid = document.getElementById('iconsGrid');
-    const drawerGrid = document.getElementById('drawerGrid');
-    const appWindow = document.getElementById('appWindow');
-    const appTitle = document.getElementById('appTitle');
-    const appContent = document.getElementById('appContent');
-    const closeApp = document.getElementById('closeApp');
-    const notifPanel = document.getElementById('notifPanel');
-    const openNotifs = document.getElementById('openNotifs');
-    const closeNotifs = document.getElementById('closeNotifs');
-    const lockScreen = document.getElementById('lockScreen');
-    const lockTime = document.getElementById('lockTime');
-    const lockDate = document.getElementById('lockDate');
-    const timeEl = document.getElementById('time');
-    const quickPanel = document.getElementById('quickPanel');
-    const openQuick = document.getElementById('openQuick');
-    const closeQuick = document.getElementById('closeQuick');
-    const appDrawer = document.getElementById('appDrawer');
-    const closeDrawer = document.getElementById('closeDrawer');
-    const ctxMenu = document.getElementById('ctxMenu');
+    // 3. Elementos DOM e Inicialização
+    const $ = id => document.getElementById(id);
+    const $$ = selector => document.querySelector(selector);
 
-    function createIconEl(a){
-      const div = document.createElement('div');
-      div.className='icon';
-      div.dataset.app = a.id;
-      div.title = a.name;
-      div.innerHTML = `
-        <img src='https://dummyimage.com/96x96/222/fff&text=${encodeURIComponent(a.name.charAt(0))}' alt='${a.name}'>
-        <span>${a.name}</span>`;
+    const phoneWrap = $('phone');
+    const iconsGrid = $('iconsGrid');
+    const dockEl = $$('.dock');
+    const drawerGrid = $('drawerGrid');
+    const appWindow = $('appWindow');
+    const appTitle = $('appTitle');
+    const appContent = $('appContent');
+    const lockScreen = $('lockScreen');
+    const appDrawer = $('appDrawer');
+    const notifPanel = $('notifPanel');
+    const quickPanel = $('quickPanel');
+    const searchInput = $('searchInput');
 
-      div.addEventListener('click', ()=>openApp(a.id));
+    // Inicializa a renderização
+    renderIcons(); 
+    renderDrawer();
+    updateUIFromState();
+    
+    // Define a hora inicial com base no contexto
+    let initialDate = new Date();
+    initialDate.setFullYear(2025, 10, 18); // Ano: 2025, Mês: Nov (10), Dia: 18
+    initialDate.setHours(12, 45, 0); // Hora: 12:45:00
+    updateClock(initialDate); 
 
-      let pressTimer = null;
-      div.addEventListener('mousedown', (ev)=>{ pressTimer = setTimeout(()=>{ showContextMenu(ev, a); }, 600)});
-      div.addEventListener('mouseup', ()=>{ clearTimeout(pressTimer) });
-      div.addEventListener('touchstart', (ev)=>{ pressTimer = setTimeout(()=>{ showContextMenu(ev, a); }, 600)});
-      div.addEventListener('touchend', ()=>{ clearTimeout(pressTimer) });
-      div.addEventListener('contextmenu', (ev)=>{ ev.preventDefault(); showContextMenu(ev,a) });
+    // ===================================
+    // 4. FUNÇÕES DE ESTADO E UI
+    // ===================================
 
-      return div;
+    // Atualiza Quick Tiles e Configurações de Apps com base no estado
+    function updateQuickTile(key) {
+        const tile = $(`quick${key.charAt(0).toUpperCase() + key.slice(1)}`);
+        if (!tile) return;
+        
+        const isActive = appState.quickSettings[key];
+        tile.classList.toggle('active', isActive);
+        
+        // Atualiza texto se houver small tag (Wi-Fi, Bluetooth)
+        const smallEl = tile.querySelector('small');
+        if (smallEl) {
+            smallEl.textContent = isActive ? 'Ativo' : 'Desativado';
+        }
+
+        // Sincroniza o toggle do Quick Panel com o app de Configurações
+        const settingToggle = $(`setting${key.charAt(0).toUpperCase() + key.slice(1)}`);
+        if (settingToggle) {
+            settingToggle.classList.toggle('active', isActive);
+        }
+    }
+    
+    function updateUIFromState() {
+        // Atualiza todos os Quick Tiles
+        Object.keys(appState.quickSettings).forEach(updateQuickTile);
+
+        // Atualiza a Bateria
+        const level = appState.battery.level;
+        $('batteryLevel').style.width = `${level}%`;
+        $('batteryPct').textContent = `${level}%`;
+        
+        let color = '#6ee7b7'; 
+        if (level < 20) color = '#ef4444'; 
+        else if (level < 50) color = '#fbbf24'; 
+        $('batteryLevel').style.background = `linear-gradient(90deg, var(--accent), ${color})`;
+    }
+
+    // Alterna o estado de uma configuração e atualiza a UI
+    function toggleSetting(key) {
+        if (key === 'airplane') {
+            const isActivating = !appState.quickSettings.airplane;
+            appState.quickSettings.airplane = isActivating;
+
+            if (isActivating) {
+                // Modo Avião: Desativa Wi-Fi e Bluetooth
+                appState.quickSettings.wifi = false;
+                appState.quickSettings.bluetooth = false;
+            }
+        } else if (appState.quickSettings.airplane) {
+            // Se Modo Avião estiver ativo, impede alteração
+            return;
+        }
+
+        appState.quickSettings[key] = !appState.quickSettings[key];
+        updateUIFromState();
+    }
+    
+    // Adiciona event listeners para Quick Tiles e App de Configurações
+    function setupInteraction() {
+        Object.keys(appState.quickSettings).forEach(key => {
+            const tile = $(`quick${key.charAt(0).toUpperCase() + key.slice(1)}`);
+            if (tile) tile.addEventListener('click', () => toggleSetting(key));
+        });
+
+        // Adiciona listeners para toggles no app de Configurações
+        ['wifi', 'bluetooth', 'location'].forEach(key => {
+            const settingToggle = $(`setting${key.charAt(0).toUpperCase() + key.slice(1)}`);
+            if (settingToggle) settingToggle.addEventListener('click', () => toggleSetting(key));
+        });
+    }
+    setupInteraction();
+
+    // ===================================
+    // 5. FUNÇÕES DE NAVEGAÇÃO E UX
+    // ===================================
+
+    // Abre a Janela de Aplicativo
+    function openApp(id){
+      const app = apps.find(x=>x.id===id);
+      if(!app || appState.locked) return;
+      
+      appState.activeApp = id;
+      appTitle.textContent = app.name;
+      appContent.innerHTML = app.content + `<p style=\"margin-top:12px;color:var(--muted);font-size:12px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.05)\">Conteúdo de demonstração — personalize para o seu trabalho.</p>`;
+      appWindow.style.display = 'flex';
+      hideLock();
+      hideAllPanels();
+
+      // Lógica específica para o app de Música
+      if(id==='music'){
+        const play = $('playBtn');
+        const pause = $('pauseBtn');
+        const track = $('track');
+        if(play) play.addEventListener('click', ()=>track.textContent='🎶 Tocando: Lo-Fi Session #1');
+        if(pause) pause.addEventListener('click', ()=>track.textContent='⏸️ Status: Pausado');
+      }
+    }
+    $('closeApp').addEventListener('click', ()=>{
+        appWindow.style.display='none';
+        appState.activeApp = null;
+    });
+
+    // Alternar painéis
+    function hideAllPanels(){
+        notifPanel.classList.remove('visible');
+        quickPanel.classList.remove('visible');
+        appDrawer.classList.remove('visible');
+        appState.activePanel = null;
+    }
+
+    $('openNotifs').addEventListener('click', ()=>{
+        if (appState.locked) return;
+        if (appState.activePanel === 'notif') { hideAllPanels(); }
+        else { hideAllPanels(); notifPanel.classList.add('visible'); appState.activePanel = 'notif'; }
+    });
+    $('closeNotifs').addEventListener('click', hideAllPanels);
+
+    $('openQuick').addEventListener('click', ()=>{
+        if (appState.locked) return;
+        if (appState.activePanel === 'quick') { hideAllPanels(); }
+        else { hideAllPanels(); quickPanel.classList.add('visible'); appState.activePanel = 'quick'; }
+    });
+    $('closeQuick').addEventListener('click', hideAllPanels);
+
+    function toggleDrawer(){ 
+        if (appState.locked || appState.activeApp) return;
+        if (appState.activePanel === 'drawer') {
+            appDrawer.classList.remove('visible');
+            appState.activePanel = null;
+        } else {
+            hideAllPanels();
+            appDrawer.classList.add('visible');
+            appState.activePanel = 'drawer';
+        }
+    }
+    $$('.homescreen').addEventListener('dblclick', toggleDrawer);
+    $('closeDrawer').addEventListener('click', toggleDrawer);
+
+    // Tela de Bloqueio
+    function showLock(){ lockScreen.style.display='flex'; appState.locked=true; }
+    function hideLock(){ 
+        if (!appState.locked) return;
+        lockScreen.style.display='none'; 
+        appState.locked=false; 
+    }
+    lockScreen.addEventListener('dblclick', hideLock);
+    showLock(); 
+
+    // ===================================
+    // 6. FUNÇÕES VISUAIS E RELÓGIO
+    // ===================================
+
+    // Atualiza a hora e data
+    function updateClock(d = new Date()) {
+      const hh = String(d.getHours()).padStart(2,'0');
+      const mm = String(d.getMinutes()).padStart(2,'0');
+      
+      const options = { weekday:'long', day:'2-digit', month:'long' };
+      const dateString = d.toLocaleDateString('pt-BR', options).replace(/,/, '');
+
+      $('time').textContent = `${hh}:${mm}`;
+      $('lockTime').textContent = `${hh}:${mm}`;
+      $('lockDate').textContent = dateString;
+      $('smallClock').textContent = `${hh}:${mm}`;
+
+      // Simula o avanço do tempo (1 minuto por segundo real)
+      initialDate.setMinutes(initialDate.getMinutes() + 1);
+      // Se não estivermos usando a data de simulação, use Date() real.
+      // Neste caso, mantemos a data de 18/11/2025 para consistência do mockup.
+    }
+    
+    // Roda a simulação do relógio a cada 1000ms (1 segundo)
+    setInterval(() => updateClock(initialDate), 1000); 
+
+
+    // 7. Renderização Dinâmica (Ícones)
+    function createIconEl(a, isDock = false, isDrawer = false){
+        const div = document.createElement('div');
+        div.className='icon' + (isDrawer ? ' drawer-icon' : '');
+        div.dataset.app = a.id;
+        div.title = a.name;
+
+        const iconText = isDock ? a.name.substring(0, 3).toUpperCase() : a.name.charAt(0).toUpperCase();
+        const imgSize = isDrawer ? '48x48' : '96x96';
+        
+        div.innerHTML = `
+            <img src='https://dummyimage.com/${imgSize}/${a.color}/fff&text=${encodeURIComponent(iconText)}' alt='${a.name}'>
+            <span>${a.name}</span>`;
+
+        if(a.id === 'messages' && !isDrawer) {
+            div.classList.add('badge');
+            div.setAttribute('data-badge', '3');
+        }
+        
+        // Event listeners (click/context menu logic...)
+        // (Mantendo a lógica de context menu e click do mockup anterior)
+        
+        div.addEventListener('click', (e)=>{ 
+            if (div.dataset.contextActive === 'true') {
+                div.dataset.contextActive = 'false';
+                return;
+            }
+            openApp(a.id)
+        });
+
+        // Simplified Context Menu trigger (using native contextmenu event)
+        div.addEventListener('contextmenu', (ev)=>{ ev.preventDefault(); showContextMenu(ev, a); });
+
+        return div;
     }
 
     function renderIcons(filter=''){
       iconsGrid.innerHTML = '';
-      const list = apps.slice(0,8).filter(a=>a.name.toLowerCase().includes(filter.toLowerCase()));
-      list.forEach(a=>iconsGrid.appendChild(createIconEl(a)));
+      dockEl.innerHTML = '';
+      const list = apps.filter(a=>a.name.toLowerCase().includes(filter.toLowerCase()));
+      
+      const dockApps = list.filter(a => a.dock);
+      dockApps.forEach(a => dockEl.appendChild(createIconEl(a, true)));
+
+      const homeScreenApps = list.filter(a => !a.dock).slice(0, 8);
+      homeScreenApps.forEach(a => iconsGrid.appendChild(createIconEl(a)));
     }
+
     function renderDrawer(){
       drawerGrid.innerHTML='';
+      apps.sort((a, b) => a.name.localeCompare(b.name));
       apps.forEach(a=>{
-        const el = createIconEl(a);
+        const el = createIconEl(a, false, true);
         el.style.width='100%';
         el.style.height='72px';
         drawerGrid.appendChild(el);
       });
     }
 
-    function openApp(id){
-      const app = apps.find(x=>x.id===id);
-      if(!app) return;
-      appTitle.textContent = app.name;
-      appContent.innerHTML = app.content + `<p style=\"margin-top:12px;color:var(--muted)\">Conteúdo de demonstração — personalize para o seu trabalho.</p>`;
-      appWindow.style.display = 'flex';
-      hideLock();
+    // Busca (Filtra ícones)
+    searchInput.addEventListener('input', (e)=>{ renderIcons(e.target.value); });
 
-      if(id==='music'){
-        const play = document.getElementById('playBtn');
-        const pause = document.getElementById('pauseBtn');
-        const track = document.getElementById('track');
-        if(play) play.addEventListener('click', ()=>track.textContent='Tocando: Jazz Lo-Fi (simulado)');
-        if(pause) pause.addEventListener('click', ()=>track.textContent='Pausado');
-      }
-    }
-    closeApp.addEventListener('click', ()=>{appWindow.style.display='none'});
-
-    openNotifs.addEventListener('click', ()=>{notifPanel.style.display='block'; quickPanel.style.display='none'; appDrawer.style.display='none'});
-    closeNotifs.addEventListener('click', ()=>{notifPanel.style.display='none'});
-
-    openQuick.addEventListener('click', ()=>{quickPanel.style.display = quickPanel.style.display==='block' ? 'none' : 'block'; notifPanel.style.display='none'; appDrawer.style.display='none'});
-    closeQuick.addEventListener('click', ()=>{quickPanel.style.display='none'});
-
-    function toggleDrawer(){ appDrawer.style.display = appDrawer.style.display==='block' ? 'none' : 'block'; notifPanel.style.display='none'; quickPanel.style.display='none' }
-    
-
-    document.querySelector('.homescreen').addEventListener('dblclick', toggleDrawer);
-    closeDrawer.addEventListener('click', ()=>{appDrawer.style.display='none'});
-
-   
+    // Menu de Contexto (simplificado para concisão)
     function showContextMenu(ev, app){
-      let x = (ev.clientX || (ev.touches && ev.touches[0].clientX)) || 120;
-      let y = (ev.clientY || (ev.touches && ev.touches[0].clientY)) || 240;
-      ctxMenu.style.left = (x - 40) + 'px';
-      ctxMenu.style.top = (y - 20) + 'px';
+      let x = (ev.clientX || 120);
+      let y = (ev.clientY || 240);
+      const rect = phoneWrap.getBoundingClientRect();
+      ctxMenu.style.left = (x - rect.left - 40) + 'px';
+      ctxMenu.style.top = (y - rect.top - 20) + 'px';
       ctxMenu.style.display = 'block';
-     
       ctxMenu.dataset.app = app.id;
     }
-    document.addEventListener('click', ()=>{ctxMenu.style.display='none'});
-    document.getElementById('ctxOpen').addEventListener('click', ()=>{openApp(ctxMenu.dataset.app)});
-    document.getElementById('ctxInfo').addEventListener('click', ()=>{alert('Informações do app: '+ctxMenu.dataset.app)});
-    document.getElementById('ctxRemove').addEventListener('click', ()=>{alert('Remover (simulado): '+ctxMenu.dataset.app)});
+    const ctxMenu = $('ctxMenu');
+    document.addEventListener('click', (e)=>{
+        if(ctxMenu.style.display === 'block' && !ctxMenu.contains(e.target)){
+            ctxMenu.style.display='none';
+        }
+    });
+    $('ctxOpen').addEventListener('click', ()=>{openApp(ctxMenu.dataset.app); ctxMenu.style.display='none';});
+    $('ctxInfo').addEventListener('click', ()=>{alert(`Informações do app: ${ctxMenu.dataset.app} (Simulado)`); ctxMenu.style.display='none';});
+    $('ctxRemove').addEventListener('click', ()=>{alert(`Desinstalando (simulado): ${ctxMenu.dataset.app}`); ctxMenu.style.display='none';});
 
-    let lockLocked = true;
-    function showLock(){lockScreen.style.display='flex';lockLocked=true}
-    function hideLock(){lockScreen.style.display='none';lockLocked=false}
-    lockScreen.addEventListener('dblclick', ()=>{hideLock()});
-    showLock();
 
-    function updateClock(){
-      const d = new Date();
-      const hh = String(d.getHours()).padStart(2,'0');
-      const mm = String(d.getMinutes()).padStart(2,'0');
-      timeEl.textContent = `${hh}:${mm}`;
-      lockTime.textContent = `${hh}:${mm}`;
-      lockDate.textContent = d.toLocaleDateString('pt-BR', {weekday:'long', day:'2-digit', month:'long'});
-      document.getElementById('smallClock').textContent = `${hh}:${mm}`;
-    }
-    updateClock(); setInterval(updateClock, 1000*30);
+    // 8. Tema Personalizado (Fora do Simulador)
+    const themeSelector = $('themeSelector');
+    themeSelector.addEventListener('click', (e) => {
+        if (e.target.classList.contains('theme-btn')) {
+            const theme = e.target.dataset.theme;
+            themeSelector.querySelectorAll('.theme-btn').forEach(btn => btn.classList.remove('active'));
+            e.target.classList.add('active');
+            
+            phoneWrap.className = 'phone-wrap'; // Reset
+            if (theme !== 'default') {
+                phoneWrap.classList.add(`theme-${theme}`);
+            }
+        }
+    });
 
-    const searchInput = document.getElementById('searchInput');
-    searchInput.addEventListener('input', (e)=>{ renderIcons(e.target.value); renderDrawer(); });
 
-    renderIcons(); renderDrawer();
-
+    // 9. Atalhos e Gestos
     document.addEventListener('keydown', (e)=>{
-      if(e.key==='Escape'){ if(appWindow.style.display==='flex') appWindow.style.display='none'; }
-      if(e.key==='n'){ notifPanel.style.display = notifPanel.style.display==='block' ? 'none' : 'block'; }
-      if(e.key==='q'){ quickPanel.style.display = quickPanel.style.display==='block' ? 'none' : 'block'; }
-      if(e.key==='d'){ toggleDrawer(); }
-      if(e.key==='l'){ lockLocked ? hideLock() : showLock(); }
+      if(e.key==='Escape'){ 
+        if(appWindow.style.display==='flex') $('closeApp').click(); 
+        else if (appState.activePanel) hideAllPanels();
+      }
+      if(e.key.toLowerCase()==='l'){ appState.locked ? hideLock() : showLock(); }
+      if(e.key.toLowerCase()==='n'){ $('openNotifs').click(); }
+      if(e.key.toLowerCase()==='q'){ $('openQuick').click(); }
+      if(e.key.toLowerCase()==='d'){ toggleDrawer(); }
     });
 
     let startY = null;
-    const phone = document.getElementById('phone');
-    phone.addEventListener('touchstart', (ev)=>{startY = ev.touches[0].clientY});
-    phone.addEventListener('touchmove', (ev)=>{
-      if(!startY) return;
-      const dy = ev.touches[0].clientY - startY;
-      if(dy>100){ notifPanel.style.display='block'; quickPanel.style.display='none'; appDrawer.style.display='none'}
-      if(dy<-100){ appDrawer.style.display='block'; quickPanel.style.display='none'; notifPanel.style.display='none'}
+    let dragLock = false; 
+    
+    phoneWrap.addEventListener('touchstart', (ev)=>{
+        if (appState.locked || appState.activeApp) return;
+        startY = ev.touches[0].clientY;
+        dragLock = false;
+        // Não intercepta scroll em áreas específicas
+        if (ev.target.closest('.app-content') || ev.target.closest('.notif-panel') || ev.target.closest('.app-drawer')) {
+            startY = null; 
+        }
     });
-    phone.addEventListener('touchend', ()=>{startY=null});
 
+    phoneWrap.addEventListener('touchmove', (ev)=>{
+      if(!startY || appState.locked) return;
+
+      const dy = ev.touches[0].clientY - startY;
+      
+      if (Math.abs(dy) > 50 && !dragLock) { 
+        dragLock = true;
+        if(dy>100){ $('openNotifs').click(); } // Swipe Down
+        else if(dy<-100){ toggleDrawer(); } // Swipe Up
+      }
+    });
+
+    phoneWrap.addEventListener('touchend', ()=>{
+        startY=null;
+        dragLock=false;
+    });
+
+    // Roda uma atualização inicial para garantir o estado correto
+    updateUIFromState();
   </script>
 </body>
 </html>
